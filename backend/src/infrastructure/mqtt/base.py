@@ -33,12 +33,12 @@ class MqttInfrastructure:
         )
 
     async def _send_live_signal(self, message: Literal["offline", "online"]):
-        await self.publish(self.topic, message)
+        await self.publish(self.topic, message, retain=True)
 
-    async def publish(self, topic: str, message: str, qos: int = 1) -> None:
+    async def publish(self, topic: str, message: str, qos: int = 1, retain: bool = False) -> None:
         try:
             async with self._client:
+                await self._client.publish(topic, payload=message, qos=qos, retain=retain)
                 logger.info(f"Published to {topic}:{message}")
-                await self._client.publish(topic, payload=message, qos=qos)
         except MqttError as e:
             logger.error(f"failed to publish to MQTT broker: {e}")
