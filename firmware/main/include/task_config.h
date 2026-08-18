@@ -1,0 +1,7 @@
+#ifndef TASK_CONFIG_H
+#define TASK_CONFIG_H
+
+#define TASK_PRIORITY 1
+#define TASK_STACK_SIZE 2048
+
+#endif // TASK_CONFIG_H
