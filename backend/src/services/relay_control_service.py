@@ -14,12 +14,12 @@ class RelayControlService:
     def __init__(self, producer: MessageProducer):
         self.producer = producer
 
-    async def request_relay_change_state(self, device_id: str, relay_id: int, state: Literal["on", "off"]) -> None:
+    async def request_relay_change_state(self, device_id: str, relay_id: int, state: Literal["ON", "OFF"]) -> None:
         """
         This method call from API (example : FastAPI)
         we only send 'request' . don't update database here
         """
-        topic = f"devices/{device_id}/commands/relay/{relay_id}"
+        topic = f"devices/{device_id}/commands/relay/{relay_id}/set"
         payload = {"action": state, "timestamp": self._get_utc_now()}
 
         await self.producer.emit(topic=topic, payload=payload, qos=1)
